@@ -1,7 +1,7 @@
 $(document).ready(function(){
   //flags
   var canDec = true;
-  var canOp = false;
+  var canOp = true;
   var canNeg = false;
   var isNeg = false;
   var isSolved;
@@ -18,9 +18,9 @@ $(document).ready(function(){
     $('#history').empty();
   }
   function clearDisplay(){
-    $('#window').empty();
+    $('#window').text(0);
     canDec = true;
-    canOp = false;
+    canOp = true;
     isSolved = false;
     isNeg = false;
     canNeg = false;
@@ -83,6 +83,9 @@ $(document).ready(function(){
           if (isOp(currDisplay[i]) && !isNeg) {
             firstHalf = currDisplay.slice(0,i+1);
             secondHalf = currDisplay.slice(i+1);
+            if (secondHalf === '0') {
+              return;
+            }
             wholeString = firstHalf + '(-' + secondHalf + ')';
             isNeg = true;
             break;
@@ -93,6 +96,12 @@ $(document).ready(function(){
             isNeg = false;
             break;
           }
+        }
+        if (currDisplay !== '0' && !wholeString) {
+          firstHalf = currDisplay.slice(0,i+1);
+          secondHalf = currDisplay.slice(i+1);
+          wholeString = firstHalf + '(-' + secondHalf + ')';
+          isNeg = true;
         }
         if (wholeString) {
           $('#window').text(wholeString);
@@ -155,8 +164,13 @@ $(document).ready(function(){
     }
     //Numbers
     $('.num').click(function(){
-      var numImput = +$(this).text();
-      appendChar(numImput);
+      var numInput = +$(this).text();
+      var currDisplay = getDisplay();
+      if (currDisplay === '0') {
+        $('#window').text(numInput);
+      } else{
+        appendChar(numInput);
+      }
       canDec = true;
       canOp = true;
       canNeg = true;
@@ -188,10 +202,15 @@ $(document).ready(function(){
       character = character.toLowerCase();
       var keys = Object.keys(charMap);
       if ($.isNumeric(character)) {
+        var currDisplay = getDisplay();
         if (isSolved) {
           clearDisplay();
         }
-        appendChar(character);
+        if (currDisplay === '0') {
+          $('#window').text(character);
+        }else {
+          appendChar(character);
+        }
         canOp = true;
         canDec = true;
         canNeg = true;
