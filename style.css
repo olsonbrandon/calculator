@@ -1,0 +1,157 @@
+/* latin */
+@font-face {
+  font-family: 'Play';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Play'), local('Play-Regular'), url(https://fonts.gstatic.com/s/play/v7/ldG7L03dPLLtYDea50KtQfesZW2xOQ-xsNqO47m55DA.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+#calculator{
+  width: 287px;
+  height: auto;
+  margin: 100px auto;
+  padding: 20px 20px 9px;
+  background:#ABABAB;
+  border-radius: 3px;
+  overflow: auto;
+}
+.view{
+  font-family: 'Play';
+  font-size: 35px;
+  text-align: right;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  padding: 15px 10px 10px 0;
+  width:239px;
+  background: white;
+  border-radius: 3px;
+  margin: 0 7px 11px 0;
+  float: right;
+}
+#window{
+  height:36px;
+}
+#history{
+  height:150px;
+  overflow-y: auto;
+  display: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+#expand{
+  float: left;
+  position: relative;
+  top: 0;
+  cursor: pointer;
+  width: 33px;
+  height: 18px;
+  background: #D3D3D3;
+  border-radius: 3px;
+  margin: 0 7px 11px 0;
+  color: #888;
+  line-height: 18px;
+  text-align: center;
+}
+#zero{
+  float: left;
+  position: relative;
+  top: 0;
+  cursor: pointer;
+  width: 140px;
+  height: 36px;
+  background: white;
+  border-radius: 3px;
+  margin: 0 7px 11px 0;
+  color: #888;
+  line-height: 36px;
+  text-align: center;
+}
+.num{
+  float: left;
+  position: relative;
+  top: 0;
+  cursor: pointer;
+  width: 66px;
+  height: 36px;
+  background: white;
+  border-radius: 3px;
+  margin: 0 7px 11px 0;
+  color: #888;
+  line-height: 36px;
+  text-align: center;
+}
+.operation{
+  float: left;
+  position: relative;
+  top: 0;
+  cursor: pointer;
+  width: 66px;
+  height: 36px;
+  background: #fa9146;
+  border-radius: 3px;
+  margin: 0 0 11px 0;
+  color: #888;
+  line-height: 36px;
+  text-align: center;
+}
+.solve{
+  float: left;
+  position: relative;
+  top: 0;
+  cursor: pointer;
+  width: 66px;
+  height: 36px;
+  background: #fa9146;
+  border-radius: 3px;
+  margin: 0 0 11px 0;
+  color: #888;
+  line-height: 36px;
+  text-align: center;
+}
+
+#c{
+  float: left;
+  position: relative;
+  top: 0;
+  cursor: pointer;
+  width: 139px;
+  height: 36px;
+  background: #ff0000;
+  border-radius: 3px;
+  margin: 0 7px 11px 0;
+  color: #888;
+  line-height: 36px;
+  text-align: center;
+}
+.special{
+  float: left;
+  position: relative;
+  top: 0;
+  cursor: pointer;
+  width: 66px;
+  height: 36px;
+  background: #D3D3D3;
+  border-radius: 3px;
+  margin: 0 7px 11px 0;
+  color: #888;
+  line-height: 36px;
+  text-align: center;
+}
+.clearfix{
+  clear:both;
+}
+#dec{
+  float: left;
+  position: relative;
+  top: 0;
+  cursor: pointer;
+  width: 66px;
+  height: 36px;
+  background: white;
+  border-radius: 3px;
+  margin: 0 7px 11px 0;
+  color: #888;
+  line-height: 36px;
+  text-align: center;
+}
+}
