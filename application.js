@@ -2,7 +2,8 @@ $(document).ready(function(){
   //flags
   var canDec = true;
   var canOp = false;
-  var canNeg = true;
+  var canNeg = false;
+  var isNeg = false;
   var isSolved;
   var hist = [];
 
@@ -21,6 +22,8 @@ $(document).ready(function(){
     canDec = true;
     canOp = false;
     isSolved = false;
+    isNeg = false;
+    canNeg = false;
   }
 
   $('#c').click(function(){
@@ -48,10 +51,15 @@ $(document).ready(function(){
         var opIn = $(this).text();
         appendChar(opIn);
         canOp = false;
+        canNeg = false;
       }
     });
     $(document).keyup(function(e){
+      var currDisplay = getDisplay();
       if(e.keyCode === 8) {
+        if (currDisplay[currDisplay.length-1] === ')') {
+          neg();
+        }else
         $('#window').text(function (index, textContent) {
           return textContent.slice(0,-1);
         });
@@ -66,27 +74,29 @@ $(document).ready(function(){
     }
 
     function neg(){
-      var currDisplay = getDisplay();
-      var firstHalf;
-      var secondHalf;
-      for (var i = currDisplay.length-1; i >= 0; i--) {
-        if (isOp(currDisplay[i])) {
-          firstHalf = currDisplay.slice(0,i+1);
-            //if (i!== currDisplay.length-1) {
-              newString += currDisplay.slice(i+1);
-              break;
-            }
-        }else if (isOp(currDisplay[i])) {
-          newString = currDisplay.slice(0,i+1);
-          newString += '-';
-            if (i !== currDisplay.length-1) {
-              newString += currDisplay.slice(i+1);
-              break;
-            }
+      if (canNeg) {
+        var currDisplay = getDisplay();
+        var firstHalf;
+        var secondHalf;
+        var wholeString;
+        for (var i = currDisplay.length-1; i >= 0; i--) {
+          if (isOp(currDisplay[i]) && !isNeg) {
+            firstHalf = currDisplay.slice(0,i+1);
+            secondHalf = currDisplay.slice(i+1);
+            wholeString = firstHalf + '(-' + secondHalf + ')';
+            isNeg = true;
+            break;
+          }else if (isNeg && isOp(currDisplay[i])) {
+            firstHalf = currDisplay.slice(0,i-1);
+            secondHalf = currDisplay.slice(i+1,-1);
+            wholeString = firstHalf + secondHalf;
+            isNeg = false;
+            break;
+          }
         }
-      }
-      if (newString) {
-        $('#window').text(newString);
+        if (wholeString) {
+          $('#window').text(wholeString);
+        }
       }
     }
 
@@ -106,28 +116,28 @@ $(document).ready(function(){
 
     function prepareCalc(str){
       str = str.replace(/x/g,'*');
-      var newStr;
-      var needsClosedParen = false;
-      for (var i = 0; i < str.length; i++) {
-        if (needsClosedParen && i === str.length-1) {
-          str += ')';
-          needsClosedParen = false;
-        }else if (needsClosedParen && isOp(str[i])) {
-          newStr = str.slice(0,i);
-          newStr += ')';
-          newStr += str.slice(i);
-          str = newStr;
-          i++;
-          needsClosedParen = false;
-        }else if (i !== 0 && str[i] === '-' && str[i-1] === '-') {
-          newStr = str.slice(0,i);
-          newStr += '(';
-          newStr += str.slice(i);
-          str = newStr;
-          i++;
-          needsClosedParen = true;
-        }
-      }
+    //  var newStr;
+    //  var needsClosedParen = false;
+    //  for (var i = 0; i < str.length; i++) {
+    //    if (needsClosedParen && i === str.length-1) {
+    //      str += ')';
+    //      needsClosedParen = false;
+    //    }else if (needsClosedParen && isOp(str[i])) {
+    //      newStr = str.slice(0,i);
+    //      newStr += ')';
+    //      newStr += str.slice(i);
+    //      str = newStr;
+    //      i++;
+    //      needsClosedParen = false;
+    //    }else if (i !== 0 && str[i] === '-' && str[i-1] === '-') {
+    //      newStr = str.slice(0,i);
+    //      newStr += '(';
+    //      newStr += str.slice(i);
+    //      str = newStr;
+    //      i++;
+    //      needsClosedParen = true;
+    //    }
+    //  }
       return str;
     }
 
@@ -149,6 +159,8 @@ $(document).ready(function(){
       appendChar(numImput);
       canDec = true;
       canOp = true;
+      canNeg = true;
+      isNeg = false;
     });
     $('#dec').click(function(){
       if(canDec){
@@ -182,15 +194,17 @@ $(document).ready(function(){
         appendChar(character);
         canOp = true;
         canDec = true;
-      }else if ($.inArray(e.keyCode.toString(), keys) !== -1 && canOp === true) {
+        canNeg = true;
+      }else if ($.inArray(e.keyCode.toString(), keys) !== -1 && canOp) {
         appendChar(charMap[e.keyCode]);
         canOp = false;
         canDec = true;
-      }else if ((e.keyCode === 46 || e.keyCode === 110) && canDec === true) {
+        canNeg = false;
+      }else if ((e.keyCode === 46 || e.keyCode === 110) && canDec) {
         canDec = false;
         canOp = false;
         appendChar('.');
-      }else if ((e.keyCode === 45 || e.keyCode === 109)) {
+      }else if ((e.keyCode === 45 || e.keyCode === 109) && canOp) {
          var currDisplay = getDisplay();
          var lastIndex = currDisplay.length-1;
          if (currDisplay.length === 0){
